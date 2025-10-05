@@ -1,7 +1,7 @@
 import chromadb
+from llm_processing import final_answer_llm
 
 client = chromadb.PersistentClient(path="./chroma_db")
-file_path = "C:/Users/dewakar/OneDrive/Documents/mindX/Forex_Trading_For_Beginners.pdf"
 collection = client.get_or_create_collection(name="sample_document")
 
 def store_in_chromadb(document_ids, document_contents):
@@ -16,4 +16,6 @@ def search_in_chromadb(query_text, k_results):
 )
     retrieved_documents = results['documents'][0]
     context = "\n\n".join(retrieved_documents)
-    return context
+    answer = final_answer_llm(content=context, query_text=query_text)
+
+    return answer
